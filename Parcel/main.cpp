@@ -1,11 +1,11 @@
-﻿#include<iostream>
+﻿
 #include<fstream>
 #include "stdio.h"
 #include "stdlib.h"
 using namespace std;
 
-fstream fin ("parcel.in.txt", ios::in);
-fstream fout ("parcel.out.txt", ios::out);
+fstream fin ("parcels.in", ios::in);
+fstream fout ("parcels.out", ios::out);
 struct node
 {
     int num;
@@ -99,7 +99,7 @@ public:
     }
 
 };
-    void sort_izeja_node (node *first)
+    void sort_izeja_node (node *&first)
     {
         if((first!=NULL) && (first->next!=NULL))
         {
@@ -128,7 +128,7 @@ public:
                         if (ieprieks !=NULL) ieprieks->next=temp;
                         ieprieks=temp;
                         if (first==pasreiz) first=temp;
-                        //if(pasreiz->next==NULL) last=pasreiz;
+
 
                     }
                     else
@@ -162,15 +162,14 @@ int main()
   {
       arr[i]=new node_pos;
       arr[i]->parcel_num=0;
-      //arr[i]->time=0;
-     // arr[i]->coord_c=0;
+
       arr[i]->first=NULL;
   }
   fin>>laiks>>komanda;
 
   while (fin)
   {
-      cout<<"komanda "<<komanda<<endl;
+
     if (komanda=='A')
     {
 
@@ -211,19 +210,13 @@ int main()
         if (arr[zemes_nr]->parcel_num!=0)
         {
             arr[zemes_nr]->parcel_num=0;
-            arr[zemes_nr]->first=NULL; //Jādzēš! nevis pirmais uz NULL
-            //jāizdēš
-//            if (arr[zemes_nr]->first!=NULL)
-//            {
-//                Temp=arr[zemes_nr]->first;
-//                Curr=arr[zemes_nr]->first;
-//                while (Temp!=NULL)
-//                {
-//
-//                }
-//            }
 
-
+            while(arr[zemes_nr]->first!=NULL)
+            {
+                Temp=arr[zemes_nr]->first->next;
+                delete arr[zemes_nr]->first;
+                arr[zemes_nr]->first=Temp;
+            }
             fout<<laiks<<" D "<<zemes_nr<<" OK"<<endl;
         }
         else
@@ -237,7 +230,7 @@ int main()
 
         if (arr[zemes_nr]->parcel_num!=0)
         {
-            //sort_izeja_node(arr[zemes_nr]->first);
+            sort_izeja_node(arr[zemes_nr]->first);
             fout<<laiks<<" P "<<zemes_nr;
             Temp=arr[zemes_nr]->first;
             while(Temp!=NULL)
@@ -257,7 +250,7 @@ int main()
     bool pieder =false;
     if (komanda=='K')
     {
-        cout<<"te"<<endl;
+
         fin>>koord_nr;
         for (int i=0; i<biggest_pos+1; i++)
         {
@@ -287,7 +280,13 @@ int main()
                 Temp=Temp->next;
             }
             fout<<endl;
-            sarakstsK.first=NULL;// Jāizdzēš saraksts
+
+            while(sarakstsK.first!=NULL)
+            {
+                Temp=sarakstsK.first->next;
+                delete sarakstsK.first;
+                sarakstsK.first=Temp;
+            }
         }
         else
         {
